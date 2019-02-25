@@ -36,10 +36,10 @@ classifier.add(Flatten())
 
 # Step 4 - Full connection
 classifier.add(Dense(units = 128, activation = 'relu'))
-classifier.add(Dense(units = 5, activation = 'sigmoid'))
+classifier.add(Dense(units = 5, activation = 'softmax'))
 
 # Compiling the CNN
-classifier.compile(optimizer = 'adam', loss = 'categorical_crossentropy', metrics = ['accuracy'])
+classifier.compile(optimizer = 'adam', loss = 'categorical_crossentropy', metrics = ['categorical_accuracy'])
 
 # Part 2 - Fitting the CNN to the images
 
@@ -63,7 +63,7 @@ test_set = test_datagen.flow_from_directory('./dataset_turtles/test_set',
                                             class_mode = 'categorical')
 
 classifier.fit_generator(training_set,
-                         steps_per_epoch = 8000,
-                         epochs = 25,
+                         steps_per_epoch = 600,
+                         epochs = 10,
                          validation_data = test_set,
                          validation_steps = 2000)
