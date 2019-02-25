@@ -36,10 +36,10 @@ classifier.add(Flatten())
 
 # Step 4 - Full connection
 classifier.add(Dense(units = 128, activation = 'relu'))
-classifier.add(Dense(units = 1, activation = 'sigmoid'))
+classifier.add(Dense(units = 5, activation = 'sigmoid'))
 
 # Compiling the CNN
-classifier.compile(optimizer = 'adam', loss = 'binary_crossentropy', metrics = ['accuracy'])
+classifier.compile(optimizer = 'adam', loss = 'categorical_crossentropy', metrics = ['accuracy'])
 
 # Part 2 - Fitting the CNN to the images
 
@@ -52,12 +52,12 @@ train_datagen = ImageDataGenerator(rescale = 1./255,
 
 test_datagen = ImageDataGenerator(rescale = 1./255)
 
-training_set = train_datagen.flow_from_directory('../dataset_turtles/training_set',
+training_set = train_datagen.flow_from_directory('./dataset_turtles/training_set',
                                                  target_size = (80, 80),
                                                  batch_size = 32,
                                                  class_mode = 'categorical')
 
-test_set = test_datagen.flow_from_directory('../dataset_turtles/test_set',
+test_set = test_datagen.flow_from_directory('./dataset_turtles/test_set',
                                             target_size = (80, 80),
                                             batch_size = 32,
                                             class_mode = 'categorical')
