@@ -106,3 +106,5 @@ venv.bak/
 .vscode/
 
 .saved_models/
+
+.new_dataset/
