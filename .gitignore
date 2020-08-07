@@ -108,3 +108,6 @@ venv.bak/
 .saved_models/
 
 .new_dataset/
+new_dataset/
+resized_dataset/
+resized_dataset2/

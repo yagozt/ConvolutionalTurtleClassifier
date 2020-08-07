@@ -28,15 +28,19 @@ batch_size = 32
 save_dir = os.path.join(os.getcwd(), 'saved_models')
 model_name = 'keras_cifar10_trained_model75.h5'
 training_set_directory = os.path.join(
-    os.getcwd(), 'dataset_turtles\\training_set')
+    os.getcwd(), 'new_dataset')
 test_set_directory = os.path.join(os.getcwd(), 'dataset_turtles\\test_set')
-data_set_directory = os.path.join(os.getcwd(), 'new_dataset')
+data_set_directory = os.path.join(os.getcwd(), 'resized_dataset')
+
+images_input_width = 170
+images_input_height = 256
 
 # Inicializando as camadas da Rede neural
 classifier = Sequential()
 
 # Step 1 - Convolution
-classifier.add(Conv2D(32, (3, 3), input_shape=(80, 80, 3), activation='relu'))
+classifier.add(Conv2D(32, (3, 3), input_shape=(
+    images_input_height, images_input_width, 3), activation='relu'))
 
 # Step 2 - Pooling
 classifier.add(MaxPooling2D(pool_size=(2, 2)))
@@ -58,7 +62,7 @@ classifier.add(Dropout(1))
 classifier.add(Dense(units=8, activation='softmax'))
 
 #  Método de compilação.
-classifier.compile(optimizer='rmsprop',
+classifier.compile(optimizer='adam',
                    loss='categorical_crossentropy', metrics=['accuracy'])
 
 # Part 2 - Fitting the CNN to the images
@@ -96,13 +100,15 @@ else:
                                        validation_split=0.2)
 
     training_set = train_datagen.flow_from_directory(data_set_directory,
-                                                     target_size=(80, 80),
+                                                     target_size=(
+                                                         images_input_height, images_input_width),
                                                      batch_size=batch_size,
                                                      class_mode='categorical',
                                                      subset="training")
 
     test_set = train_datagen.flow_from_directory(data_set_directory,
-                                                 target_size=(80, 80),
+                                                 target_size=(
+                                                     images_input_height, images_input_width),
                                                  batch_size=batch_size,
                                                  class_mode='categorical',
                                                  subset="validation")
@@ -110,12 +116,11 @@ else:
 classifier.fit_generator(training_set,
                          steps_per_epoch=300,
                          epochs=5,
-                         validation_steps=50,
                          validation_data=test_set)
 
 
 scores = classifier.evaluate_generator(
-    generator=test_set, steps=250, verbose=1)
+    generator=test_set, steps=10, verbose=1)
 print('Test loss:', scores[0])
 print('Test accuracy:', scores[1])
 
